@@ -3,9 +3,10 @@ from scipy.interpolate import interp1d
 import numpy as np
 import math
 from PIL import Image
+from matplotlib import cm
 
 # na wyjściu - lista współczynników detali otrzymanych z filtra, pierwszy element listy to współczynnik aproksymacji
-def generateImage(coeffs, x, y):
+def generateImage(coeffs, x, y, filename):
     # odrzucamy niepotrzeby współczynnik aproksymacji
     coeffs = coeffs[1:]
     level = len(coeffs)
@@ -19,14 +20,12 @@ def generateImage(coeffs, x, y):
         coeffs[i] = multiplyList(coeffs[i], 2**(level-1-i))
         coeffs[i] = scale_list(coeffs[i], x)
         coeffs[i] = [int((elem-minVal)*scale_level) for elem in coeffs[i]]
-    #print(coeffs)
 
     y_scale = max(1, y // level)
     img_ready_table = prepare_table(coeffs, y_scale)
 
-    img_numpy = np.array(img_ready_table).astype(np.uint8)
-    img = Image.fromarray(img_numpy)
-    img.save("example.png")
+    img = Image.fromarray(np.uint8(cm.gist_earth(img_ready_table)*255))
+    img.save(filename + ".png")
 
 def prepare_table(coeffs, scale):
     table = []
@@ -54,7 +53,6 @@ def scale_list(lst, size):
 def getMax(list_of_lists):
     mx = None
     for list in list_of_lists:
-        print(list)
         if mx is None or max(list) > mx:
             mx = max(list)
     return mx
@@ -65,32 +63,3 @@ def getMin(list_of_lists):
         if mn is None or min(list) < mn:
             mn = min(list)
     return mn
-
-def printEnergyMap():
-    t, data, cD3, cD2, cD1, cA3 = WAV_example()
-    cD3 = cD3.tolist()
-    cD2 = cD2.tolist()
-    cD1 = cD1.tolist()
-    cD3 = multiplyList(cD3, 4)
-    cD2 = multiplyList(cD2, 2)
-    cD3 = scaleList(cD3, 200)
-    cD2 = scaleList(cD2, 200)
-    cD1 = scaleList(cD1, 200)
-    #print(cD2)
-
-    max = getMax([cD3, cD2, cD1])
-    min = getMin([cD3, cD2, cD1])
-    scaleLevel = 255/(max-min)
-
-    cD1 = [int((elem-min)*scaleLevel) for elem in cD1]
-    cD2 = [int((elem-min)*scaleLevel) for elem in cD2]
-    cD3 = [int((elem-min)*scaleLevel) for elem in cD3]
-
-    print(cD1)
-    print(cD2)
-    print(cD3)
-
-    img_arr = [cD1 for i in range(30)] + [cD2 for i in range(30)] + [cD3 for i in range(30)]
-    img_numpy = np.array(img_arr).astype(np.uint8)
-    img = Image.fromarray(img_numpy)
-    img.save("example.png")

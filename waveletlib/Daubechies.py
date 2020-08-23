@@ -1,6 +1,6 @@
 import wavelet
 
-class Daubechies2(wavelet.Wavelet):
+class Daubechies(wavelet.Wavelet):
     #TODO: przenieść mapę do osobnej klasy
     map = {
         1: [  7.071067811865475244008443621048490392848359376884740365883398E-1,

@@ -4,8 +4,17 @@ import numpy as np
 import math
 from PIL import Image
 from matplotlib import cm
+import matplotlib.pyplot as plt
+import matplotlib
 
 # na wyjściu - lista współczynników detali otrzymanych z filtra, pierwszy element listy to współczynnik aproksymacji
+def showImage(plt):
+    plt
+    plt.show()
+
+def saveImage(plt, filename):
+    matplotlib.pyplot.savefig(filename)
+
 def generateImage(coeffs, x, y, filename):
     # odrzucamy niepotrzeby współczynnik aproksymacji
     coeffs = coeffs[1:]
@@ -24,8 +33,12 @@ def generateImage(coeffs, x, y, filename):
     y_scale = max(1, y // level)
     img_ready_table = prepare_table(coeffs, y_scale)
 
-    img = Image.fromarray(np.uint8(cm.gist_earth(img_ready_table)*255))
-    img.save(filename + ".png")
+    H = np.array(img_ready_table)
+    plt.imshow(H, norm=matplotlib.colors.LogNorm())
+    return plt
+
+    #img = Image.fromarray(np.uint8(cm.gist_earth(img_ready_table)*255))
+    #img.save(filename + ".png")
 
 def prepare_table(coeffs, scale):
     table = []

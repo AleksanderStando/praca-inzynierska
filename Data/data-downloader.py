@@ -15,16 +15,16 @@ def downloadSamples(file_path, folder_name):
                 file = requests.get(url)
                 open(folder_name + '/' + row[0], 'wb').write(file.content)
 #downloadSamples('House-Sparrow.csv', "House-Sparrow-mp3")
-downloadSamples('Common-Loon.csv', 'Common-Loon-mp3')
+#downloadSamples('Common-Loon.csv', 'Common-Loon-mp3')
 #downloadSamples('Eurasian-Skylark.csv', 'Eurasian-Skylark-mp3')
 
-def convertMp3ToWav(mp3_folder, wav_folder):
+def convertMp3ToWav(mp3_folder, wav_folder, prefix):
     Path(wav_folder).mkdir(parents=True, exist_ok=True)
     for file in os.listdir(mp3_folder):
         print(file)
         sound = AudioSegment.from_mp3(os.path.join(mp3_folder, file))
-        sound.export(os.path.join(wav_folder, file), format="wav")
+        sound.export(os.path.join(wav_folder, prefix+file), format="wav")
 
-convertMp3ToWav('Common-Loon-mp3', 'Common-Loon-WAV')
-convertMp3ToWav('House-Sparrow', 'House-Sparrow-WAV')
-convertMp3ToWav('Eurasian-Skylark', 'Eurasian-Skylark-WAV')
+#convertMp3ToWav('Common-Loon-mp3', 'Common-Loon-WAV', 'CL_')
+#convertMp3ToWav('House-Sparrow-mp3', 'House-Sparrow-WAV', 'HS_')
+#convertMp3ToWav('Eurasian-Skylark-mp3', 'Eurasian-Skylark-WAV', 'ES_')

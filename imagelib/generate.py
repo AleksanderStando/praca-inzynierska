@@ -14,6 +14,7 @@ def showImage(plt):
 
 def saveImage(plt, filename):
     matplotlib.pyplot.savefig(filename)
+    plt.clf()
 
 def generateImage(coeffs, x, y, filename):
     # odrzucamy niepotrzeby współczynnik aproksymacji
@@ -34,7 +35,10 @@ def generateImage(coeffs, x, y, filename):
     img_ready_table = prepare_table(coeffs, y_scale)
 
     H = np.array(img_ready_table)
-    plt.imshow(H, norm=matplotlib.colors.LogNorm())
+    colormap = plt.imshow(H)
+    cbar = plt.colorbar(colormap)
+    plt.xlabel("Time")
+    plt.ylabel("Level")
     return plt
 
     #img = Image.fromarray(np.uint8(cm.gist_earth(img_ready_table)*255))

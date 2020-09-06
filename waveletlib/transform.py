@@ -4,7 +4,8 @@ class Transform:
     def __init__(self, wavelet):
         self.wavelet = wavelet
     def decompose(self, signal, level):
-        # TODO: zwracanie błędu, gdy level jest zbyt duży
+        if(len(signal) < 2**level):
+            raise Exception("Level is too high for this length of data")
         coeffs_list = []
         a = signal
         for i in range(level):

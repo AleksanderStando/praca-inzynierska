@@ -1,14 +1,14 @@
-import transform
+from transform import Transform
 import wavelet
-import Daubechies
-import Symlet
-import Coiflet
+from Daubechies import Daubechies
+from Symlet import Symlet
+from Coiflet import Coiflet
 
 import pywt
 
 x = [1,2,3,4,5,6,7,8, 9] * 3
 
-wave = transform.Transform(Daubechies.Daubechies(2))
+wave = Transform(Daubechies(2))
 print(wave.decompose(x, 1))
 
 print("pywt library:")
@@ -18,7 +18,7 @@ print(coeffs)
 
 print("***")
 
-wave = transform.Transform(Symlet.Symlet(2))
+wave = Transform(Symlet(2))
 print(wave.decompose(x, 1))
 
 print("pywt library:")
@@ -28,7 +28,7 @@ print(coeffs)
 
 print("***")
 
-wave = transform.Transform(Coiflet.Coiflet(1))
+wave = Transform(Coiflet(1))
 print(wave.decompose(x, 1))
 
 print("pywt library:")

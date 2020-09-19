@@ -33,12 +33,12 @@ def create_images(path, save_folder_name):
     for filename in os.listdir(path):
         samplerate, data = wavfile.read(os.path.join(path, filename))
         print(filename)
-        coeffs = wave.decompose(data, 15)
+        coeffs = wave.decompose(data, 10)
         print("Generating file...")
         plt = generate.generateImage(coeffs, 1000, 1000, filename)
         save_path = os.path.join("Images", "Daubechies3", save_folder_name, filename)
         generate.saveImage(plt, save_path)
 
-
-create_images(os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), "Eurasian-Skylark")
-create_images(os.path.join("Cut_Data", "House-Sparrow-WAV"), "House-Sparrow")
+create_images(os.path.join("Cut_Data", "Common-Loon-WAV"), "Common-Loon")
+#create_images(os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), "Eurasian-Skylark")
+#create_images(os.path.join("Cut_Data", "House-Sparrow-WAV"), "House-Sparrow")

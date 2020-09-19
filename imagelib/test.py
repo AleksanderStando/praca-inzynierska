@@ -40,5 +40,5 @@ def create_images(path, save_folder_name):
         generate.saveImage(plt, save_path)
 
 
-create_images(os.path.join("Cut_Data", "Eurasian-Skylark-WAV") "Eurasian-Skylark")
+create_images(os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), "Eurasian-Skylark")
 create_images(os.path.join("Cut_Data", "House-Sparrow-WAV"), "House-Sparrow")

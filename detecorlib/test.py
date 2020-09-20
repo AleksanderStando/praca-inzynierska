@@ -34,7 +34,7 @@ def test_system(detector, path, expected_answer):
         samplerate, data = wavfile.read(os.path.join(path, filename))
         coeffs = wave.decompose(data, 10)
         answer = detector.recognize(coeffs, 10000)
-        print("Expected answer: " + expected_answer + ", actual answer: " + answer)
+        print("Expected answer: " + expected_answer + ", detector answer: " + answer)
         if answer == expected_answer:
             correct_ans += 1
         sum_ans += 1
@@ -50,6 +50,6 @@ rule2 = Rule(level_3_spikes_char, 0.1, [eurasian_skylark, common_loon], [house_s
 
 bird_detector = Detector([rule1, rule2], [common_loon, eurasian_skylark, house_sparrow])
 
-test_system(bird_detector, os.path.join("Cut_Data", "Common-Loon-WAV"), common_loon)
-test_system(bird_detector, os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), eurasian_skylark)
+#test_system(bird_detector, os.path.join("Cut_Data", "Common-Loon-WAV"), common_loon)
+#test_system(bird_detector, os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), eurasian_skylark)
 test_system(bird_detector, os.path.join("Cut_Data", "House-Sparrow-WAV"), house_sparrow)

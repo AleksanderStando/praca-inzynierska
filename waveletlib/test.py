@@ -8,6 +8,7 @@ import pywt
 
 x = [1,2,3,4,5,6,7,8, 9] * 3
 
+print("waveletlib:")
 wave = Transform(Daubechies(2))
 print(wave.decompose(x, 1))
 
@@ -18,6 +19,7 @@ print(coeffs)
 
 print("***")
 
+print("waveletlib:")
 wave = Transform(Symlet(2))
 print(wave.decompose(x, 1))
 
@@ -28,6 +30,7 @@ print(coeffs)
 
 print("***")
 
+print("waveletlib:")
 wave = Transform(Coiflet(1))
 print(wave.decompose(x, 1))
 

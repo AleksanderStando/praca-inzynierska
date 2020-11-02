@@ -14,12 +14,9 @@ class Transform:
 
         coeffs_list.append(a)
         coeffs_list.reverse()
-
         return coeffs_list
+        
     def dwt(self, data):
-        output_len = len(data) // 2 + len(data) % 2
-
         cA = downsampling_convolution(self, data, self.wavelet.dec_lo, self.wavelet.step, "SYMMETRIC")
         cD = downsampling_convolution(self, data, self.wavelet.dec_hi, self.wavelet.step, "SYMMETRIC")
-
         return cA, cD

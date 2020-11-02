@@ -1,5 +1,3 @@
-
-
 def downsampling_convolution(self, data, filter, step, mode):
     output = []
     i = step - 1

@@ -4,15 +4,23 @@ import characteristic
 class LevelVar(characteristic.Characteristic):
     #data_level - from which level do we take data
     #data cut - which % of data do we cut
-    def __init__(self,importance, data_level, data_cut, window_time, slide_time):
+    def __init__(self,importance, data_level, min_time, data_cut, window_time, slide_time):
         self.importance = importance
         self.data_level = data_level
         self.data_cut = data_cut
         self.window_time = window_time
         self.slide_time = slide_time
+        self.min_time = min_time
+
+    def checkLevel(self, levels):
+        if levels < self.data_level:
+            raise Exception("Data is decomposed to too little amount of levels")
 
     def calculate(self, data, time):
+        self.check_time(time)
         data = data[1:]
+        self.checkLevel(len(data))
+
 
         maxVal = self.getMax(data)
         minVal = self.getMin(data)

@@ -13,12 +13,13 @@ from Daubechies import Daubechies
 
 wave = Transform(Daubechies(3))
 
-level_5_var_char = LevelVar(1, 5, 0, 3000, 300)
-level_3_spikes_char = LevelSpikes(1, 3, 3000, 300, 1.10)
+level_5_var_char = LevelVar(1, 5, 0,3000, 3000, 300)
+level_3_spikes_char = LevelSpikes(1, 3, 3000, 3000, 300, 1.10)
 
 def test_characteristic(path, char):
     for filename in os.listdir(path):
         samplerate, data = wavfile.read(os.path.join(path, filename))
+        print(samplerate)
         coeffs = wave.decompose(data, 10)
         score = char.calculate(coeffs, 10000)
         print(path + " " + filename + " " + str(score))
@@ -32,8 +33,9 @@ def test_system(detector, path, expected_answer):
     sum_ans = 0
     for filename in os.listdir(path):
         samplerate, data = wavfile.read(os.path.join(path, filename))
-        coeffs = wave.decompose(data, 10)
-        answer = detector.recognize(coeffs, 10000)
+        time = int(len(data)*1000/samplerate)
+        coeffs = wave.decompose(data, 5)
+        answer = detector.recognize(coeffs, time)
         print("Expected answer: " + expected_answer + ", detector answer: " + answer)
         if answer == expected_answer:
             correct_ans += 1
@@ -50,6 +52,6 @@ rule2 = Rule(level_3_spikes_char, 0.1, [eurasian_skylark, common_loon], [house_s
 
 bird_detector = Detector([rule1, rule2], [common_loon, eurasian_skylark, house_sparrow])
 
-#test_system(bird_detector, os.path.join("Cut_Data", "Common-Loon-WAV"), common_loon)
-#test_system(bird_detector, os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), eurasian_skylark)
+test_system(bird_detector, os.path.join("Cut_Data", "Common-Loon-WAV"), common_loon)
+test_system(bird_detector, os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), eurasian_skylark)
 test_system(bird_detector, os.path.join("Cut_Data", "House-Sparrow-WAV"), house_sparrow)

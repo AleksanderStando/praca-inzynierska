@@ -1,0 +1,2 @@
+class LevelTooSmallException(Exception):
+    pass

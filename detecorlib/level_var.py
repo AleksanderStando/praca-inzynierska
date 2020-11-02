@@ -1,5 +1,6 @@
 import numpy as np
 import characteristic
+from levelTooSmallException import *
 
 class LevelVar(characteristic.Characteristic):
     #data_level - from which level do we take data
@@ -14,7 +15,7 @@ class LevelVar(characteristic.Characteristic):
 
     def checkLevel(self, levels):
         if levels < self.data_level:
-            raise Exception("Data is decomposed to too little amount of levels")
+            raise LevelTooSmallException("Data is decomposed to too little amount of levels")
 
     def calculate(self, data, time):
         self.check_time(time)

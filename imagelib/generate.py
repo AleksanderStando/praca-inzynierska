@@ -16,27 +16,50 @@ def saveImage(plt, filename):
     matplotlib.pyplot.savefig(filename)
     plt.clf()
 
-def generateImage(coeffs, x, y, filename):
+def prepare_standard_scale(max_value):
+    return lambda x: int(x*(175/max_value))
+
+def prepare_log_scale(max_value):
+    log_scale = math.pow(max_value, 1/175)
+    print("Log scale")
+    print(log_scale)
+    return lambda x: int(math.log(x, log_scale))
+
+def get_color(value, scale_pos, scale_neg):
+    if value == 0:
+        return [0,0,0]
+    elif value > 0:
+        return [int(scale_pos(value)), 0, 0]
+    elif value < 0:
+        return [0, int(scale_neg(-value)), 0]
+
+def generateImage(coeffs, x, y, filename, log_scale = False):
     # odrzucamy niepotrzeby współczynnik aproksymacji
     coeffs = coeffs[1:]
     level = len(coeffs)
 
     maxVal = getMax(coeffs)
     minVal = getMin(coeffs)
-    scale_level = 255/(maxVal-minVal)
     # zamiana listy na postać, która umożliwia stworzenie obrazka
     # wyrównanie list do równej długości
+
+    if log_scale == True:
+        scale_pos = prepare_log_scale(maxVal)
+        scale_neg = prepare_log_scale(-minVal)
+    else:
+        scale_pos = prepare_standard_scale(maxVal)
+        scale_neg = prepare_standard_scale(-minVal)
+
     for i in range(0, level):
         coeffs[i] = multiplyList(coeffs[i], 2**(level-1-i))
         coeffs[i] = scale_list(coeffs[i], x)
-        coeffs[i] = [int((elem-minVal)*scale_level) for elem in coeffs[i]]
+        coeffs[i] = [get_color(elem, scale_pos, scale_neg) for elem in coeffs[i]]
 
     y_scale = max(1, y // level)
     img_ready_table = prepare_table(coeffs, y_scale)
-
     H = np.array(img_ready_table)
+
     colormap = plt.imshow(H)
-    cbar = plt.colorbar(colormap)
     plt.xlabel("Time")
     plt.ylabel("Level")
     return plt

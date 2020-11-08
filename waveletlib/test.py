@@ -40,4 +40,4 @@ print("pywt library:")
 coeffs = pywt.wavedec(x, 'coif1', level=2, mode='symmetric')
 print(coeffs)
 
-draw_wavelet(Daubechies(2))
+draw_wavelet(Daubechies(3))

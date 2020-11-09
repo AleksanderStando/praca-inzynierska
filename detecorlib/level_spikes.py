@@ -5,8 +5,7 @@ from levelTooSmallException import *
 class LevelSpikes(characteristic.Characteristic):
     #data_level - from which level do we take data
     #data cut - which % of data do we cut
-    def __init__(self,importance, data_level, min_time, window_time, slide_time, multiplier):
-        self.importance = importance
+    def __init__(self,data_level, min_time, window_time, slide_time, multiplier):
         self.data_level = data_level
         self.window_time = window_time
         self.slide_time = slide_time

@@ -5,8 +5,7 @@ from levelTooSmallException import *
 class LevelVar(characteristic.Characteristic):
     #data_level - from which level do we take data
     #data cut - which % of data do we cut
-    def __init__(self,importance, data_level, min_time, data_cut, window_time, slide_time):
-        self.importance = importance
+    def __init__(self,data_level, min_time, data_cut, window_time, slide_time):
         self.data_level = data_level
         self.data_cut = data_cut
         self.window_time = window_time
@@ -21,7 +20,6 @@ class LevelVar(characteristic.Characteristic):
         self.check_time(time)
         data = data[1:]
         self.checkLevel(len(data))
-
 
         maxVal = self.getMax(data)
         minVal = self.getMin(data)

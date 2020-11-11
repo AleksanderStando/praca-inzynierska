@@ -12,7 +12,7 @@ from Daubechies import Daubechies
 
 x = [1,2,3,4,3,6,2,8,1,2,3,4,3] * 40
 
-wave = Transform(Daubechies(1))
+wave = Transform(Daubechies(3))
 #coeffs = wave.decompose(x, 6)
 #
 #plt = generate.generateImage(coeffs, 1000, 1000, "test1")
@@ -21,9 +21,9 @@ wave = Transform(Daubechies(1))
 samplerate, data = wavfile.read('61300')
 coeffs = wave.decompose(data, 10)
 plt = generate.generateImage(coeffs, 1000, 1000, "test2", log_scale=False)
-generate.saveImage(plt, "test2_daub1")
+generate.saveImage(plt, "test2_daub3")
 plt = generate.generateImage(coeffs, 1000, 1000, "test2", log_scale=True)
-generate.saveImage(plt, "test2_log_daub1")
+generate.saveImage(plt, "test2_log_daub3")
 
 #samplerate, data = wavfile.read('231048')
 #coeffs = wave.decompose(data, 20)

@@ -5,6 +5,7 @@ import math
 from PIL import Image
 from matplotlib import cm
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 import matplotlib
 
 # na wyjściu - lista współczynników detali otrzymanych z filtra, pierwszy element listy to współczynnik aproksymacji
@@ -53,13 +54,35 @@ def generateImage(coeffs, x, y, filename, log_scale = False):
     for i in range(0, level):
         coeffs[i] = multiplyList(coeffs[i], 2**(level-1-i))
         coeffs[i] = scale_list(coeffs[i], x)
-        coeffs[i] = [get_color(elem, scale_pos, scale_neg) for elem in coeffs[i]]
+        #coeffs[i] = [get_color(elem, scale_pos, scale_neg) for elem in coeffs[i]]
 
     y_scale = max(1, y // level)
     img_ready_table = prepare_table(coeffs, y_scale)
-    H = np.array(img_ready_table)
+    Z = np.array(img_ready_table)
+    Z = np.rot90(Z)
+    Z = np.rot90(Z)
+    Z = np.rot90(Z)
 
-    colormap = plt.imshow(H)
+    Y_SIZE = len(img_ready_table)
+    X_SIZE = len(img_ready_table)
+
+    time = 10
+
+    step_x = time/X_SIZE
+    step_y = level/Y_SIZE
+
+    X, Y = np.mgrid[0:time:complex(0, X_SIZE), 0:level:complex(0, Y_SIZE)]
+
+    fig, ax = plt.subplots(1, 1)
+    if log_scale==True:
+        pcm = ax.pcolormesh(X, Y, Z, norm=colors.SymLogNorm(linthresh=0.03, linscale=0.03,
+                                              vmin=-1.0, vmax=1.0, base=10),
+                       cmap='RdBu_r', shading='auto')
+    else:
+        pcm = ax.pcolormesh(X,Y,Z, cmap='RdBu_r', shading='auto')
+
+    fig.colorbar(pcm, ax=ax, extend='both')
+
     plt.xlabel("Time")
     plt.ylabel("Level")
     return plt

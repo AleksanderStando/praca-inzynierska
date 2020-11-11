@@ -64,12 +64,16 @@ eurasian_skylark = "Eurasian Skylark"
 house_sparrow = "House Sparrow"
 
 level_5_var_char = LevelVar(5, 3000, 0, 3000, 300)
+level_4_var_char = LevelVar(4, 3000, 0, 3000, 300)
 level_3_spikes_char = LevelSpikes(3, 3000, 3000, 300, 1.10)
+level_2_spikes_char = LevelSpikes(2, 3000, 3000, 300, 1.10)
 
 rule1 = Rule("level5var", level_5_var_char)
-rule2 = Rule("level3spikes", level_3_spikes_char)
+rule2 = Rule("level4var", level_4_var_char)
+rule3 = Rule("level3spikes", level_3_spikes_char)
+rule4 = Rule("level2spikes", level_2_spikes_char)
 
-bird_detector = Detector([rule1, rule2])
+bird_detector = Detector([rule1, rule2, rule3, rule4])
 
 #serialize_folder(os.path.join("Cut_Data", "Common-Loon-WAV"), "Common-Loon-Serialized")
 #serialize_folder(os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), "Eurasian-Skylark-Serialized")

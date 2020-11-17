@@ -11,11 +11,11 @@ x = [1,2,3,4,5,6,7,8, 9] * 3
 
 print("waveletlib:")
 wave = Transform(Daubechies(2))
-print(wave.decompose(x, 2))
+print(wave.decompose(x, 3, "PERIODIC"))
 
 print("pywt library:")
 
-coeffs = pywt.wavedec(x, 'db2', level=2, mode='symmetric')
+coeffs = pywt.wavedec(x, 'db2', level=3, mode='periodic')
 print(coeffs)
 
 print("***")

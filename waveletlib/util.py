@@ -3,7 +3,7 @@ def downsampling_convolution(self, data, filter, step, mode):
     i = step - 1
     N = len(data)
     F = len(filter)
-    while i < F and i < len(data):
+    while i < F and i < N:
         sum = 0
         j = 0
         while j < i:
@@ -21,6 +21,13 @@ def downsampling_convolution(self, data, filter, step, mode):
                     sum = sum + filter[j]*data[N-1-k]
                     k = k+1
                     j = j+1
+        if mode == "PERIODIC":
+            while j < F:
+                k = 0
+                while k < N and j < F:
+                    sum += filter[j]*data[N-1-k]
+                    k = k + 1
+                    j = j + 1
         i = i + step
         output.append(sum)
 
@@ -49,11 +56,19 @@ def downsampling_convolution(self, data, filter, step, mode):
                     sum = sum + filter[i-N-j]*data[k]
                     k = k+1
                     j = j+1
+        if mode == "PERIODIC":
+            while j < F:
+                k = 0
+                while k < len(data) and j < F:
+                    sum += filter[j]*data[N-1-k]
+                    k = k+1
+                    j = j+1
+
         while j < i:
             sum = sum + filter[j]*data[i-j]
 
-        while j < F:
-            if mode == "SYMMETRIC":
+        if mode == "SYMMETRIC":
+            while j < F:
                 k = 0
                 while k < len(data) and i - j >= len(data):
                     sum = sum + filter[j]*data[k]
@@ -64,6 +79,11 @@ def downsampling_convolution(self, data, filter, step, mode):
                     sum = sum + filter[j]*data[N-1-k]
                     k = k+1
                     j = j+1
+        if mode == "PERIODIC":
+            while j < F:
+                k = 0
+                while k < N and j < F:
+                    sum = sum + filter[j]*data[N-1-k]
         output.append(sum)
         i = i + step
 
@@ -80,6 +100,13 @@ def downsampling_convolution(self, data, filter, step, mode):
                     j = j+1
                 k = 0
                 while k < N and j < F:
+                    sum = sum + filter[i-N-j]*data[k]
+                    k = k+1
+                    j = j+1
+        if mode == "PERIODIC":
+            while i - j >= N:
+                k = 0
+                while k < N and i-j >= N:
                     sum = sum + filter[i-N-j]*data[k]
                     k = k+1
                     j = j+1

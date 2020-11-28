@@ -3,8 +3,10 @@ from scipy.io import wavfile
 import os
 from level_var import LevelVar
 from level_spikes import LevelSpikes
+from level_avg_amp import LevelAvgAmp
 from detector import Detector
 from rule import Rule
+
 
 sys.path.insert(0, '../waveletlib')
 sys.path.insert(0, '../serializelib')
@@ -44,8 +46,9 @@ def test_system(detector, path):
         inner_folder = os.path.join(path, folder)
         for file in os.listdir(inner_folder):
             coeffs, time, name, family, order = deserialize(inner_folder, file)
-            result = detector.recognize(coeffs, time)
+            (result, rules_map) = detector.recognize(coeffs, time*1000)
             print("Expected answer: " + expected_res + ", detector answer: " + result)
+            print(rules_map)
             if result == expected_res:
                 correct_ans += 1
             sum_ans += 1
@@ -66,16 +69,18 @@ house_sparrow = "House Sparrow"
 level_5_var_char = LevelVar(5, 3000, 0, 3000, 300)
 level_4_var_char = LevelVar(4, 3000, 0, 3000, 300)
 level_3_var_char = LevelVar(3, 3000, 0, 3000, 300)
-level_3_spikes_char = LevelSpikes(3, 3000, 500, 300, 1.1)
-level_2_spikes_char = LevelSpikes(2, 3000, 500, 300, 1.1)
+level_3_spikes_char = LevelSpikes(3, 3000, 500, 300, 1.2)
+level_2_spikes_char = LevelSpikes(2, 3000, 500, 300, 1.2)
+level_4_avg = LevelAvgAmp(4, 3000)
 
 rule1 = Rule("level5var", level_5_var_char)
 rule2 = Rule("level4var", level_4_var_char)
 rule3 = Rule("level3var", level_3_var_char)
 rule4 = Rule("level3spikes", level_3_spikes_char)
 rule5 = Rule("level2spikes", level_2_spikes_char)
+rule6 = Rule("level4avg", level_4_avg)
 
-bird_detector = Detector([rule1, rule2, rule3, rule4, rule5])
+bird_detector = Detector([rule1, rule2, rule3, rule4, rule5, rule6])
 
 #serialize_folder(os.path.join("Cut_Data", "Common-Loon-WAV"), "Common-Loon-Serialized")
 #serialize_folder(os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), "Eurasian-Skylark-Serialized")

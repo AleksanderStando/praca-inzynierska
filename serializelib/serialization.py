@@ -4,6 +4,7 @@ import os
 
 def serialize(path, coeffs, time, name, family, order):
     to_serialize = TransformData(coeffs, time, name, family, order)
+    name, file_extension = os.path.splitext(name)
     path = os.path.join(path, name + ".fal")
     with open(path, 'wb') as output:
         pickle.dump(to_serialize, output)

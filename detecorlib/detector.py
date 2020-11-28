@@ -23,7 +23,7 @@ class Detector:
             for file in os.listdir(inner_folder):
                 coeffs, time, name, family, order = deserialize(inner_folder, file)
                 for rule in self.rules:
-                    res = rule.char.calculate(coeffs, time)
+                    res = rule.char.calculate(coeffs, time*1000)
                     print(res)
                     result_dict[(rule.name, type_name)].append(res)
         print(result_dict)
@@ -37,12 +37,17 @@ class Detector:
 
     def recognize(self, data, time):
         types = self.types
+        top_results = {}
         result = {}
         for rule in self.rules:
+            max_score_for_rule = -1
             char_score = rule.char.calculate(data, time)
             for type in types:
                 rule_score = rule.count_score(type, char_score)
                 result[(rule.name, type)] = rule_score
+                if rule_score > max_score_for_rule:
+                    max_score_for_rule = rule_score
+                    top_results[rule.name] = type
         max_score = -1
         result_type = ""
         for type in types:
@@ -53,4 +58,4 @@ class Detector:
             if rec_score > max_score:
                 result_type = type
                 max_score = rec_score
-        return result_type
+        return (result_type, top_results)

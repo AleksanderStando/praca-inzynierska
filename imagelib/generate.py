@@ -34,7 +34,7 @@ def get_color(value, scale_pos, scale_neg):
     elif value < 0:
         return [0, int(scale_neg(-value)), 0]
 
-def generateImage(coeffs, x, y, filename, log_scale = False):
+def generateImage(coeffs, x, y, filename, log_scale = False, time = 10):
     # odrzucamy niepotrzeby współczynnik aproksymacji
     coeffs = coeffs[1:]
     level = len(coeffs)
@@ -66,8 +66,6 @@ def generateImage(coeffs, x, y, filename, log_scale = False):
     Y_SIZE = len(img_ready_table)
     X_SIZE = len(img_ready_table)
 
-    time = 10
-
     step_x = time/X_SIZE
     step_y = level/Y_SIZE
 
@@ -76,7 +74,7 @@ def generateImage(coeffs, x, y, filename, log_scale = False):
     fig, ax = plt.subplots(1, 1)
     if log_scale==True:
         pcm = ax.pcolormesh(X, Y, Z, norm=colors.SymLogNorm(linthresh=0.03, linscale=0.03,
-                                              vmin=-1.0, vmax=1.0, base=10),
+                                              vmin=-1.0, vmax=1.0, base=1.01),
                        cmap='RdBu_r', shading='auto')
     else:
         pcm = ax.pcolormesh(X,Y,Z, cmap='RdBu_r', shading='auto')

@@ -27,14 +27,24 @@ class Rule:
         model = self.type_models[name]
         if self.mode == "normal":
             if char_score == model.avg:
+                #print(self.name + " " + name + "100")
                 return 100
-            diff = abs(model.avg - char_score)
-            tolerated_diff = 3*model.var
-            if tolerated_diff == 0:
+            if model.avg == 0:
+                #print(self.name + " " + name + " 0")
                 return 0
-            var_score = max(50 - (diff*50 / tolerated_diff), 0)
+            if char_score > model.avg:
+                scale = model.avg/char_score
+            else:
+                scale = char_score/model.avg
+
+            # tolerated_diff = 5*model.var
+            # model_scale = model.avg/(model.avg+tolerated_diff)
+            # if tolerated_diff == 0:
+            #     return 0
+            var_score = max(50*scale, 0)
             if char_score > model.avg:
                 minmax_score = max(50 - ((char_score - model.avg) / (model.max - model.avg) * 25), 0)
             else:
                 minmax_score = max(50 - ((model.avg - char_score) / (model.avg - model.min) * 25), 0)
+            #print(self.name + " " + name + " " + str(var_score _ minmax_score))
             return var_score + minmax_score

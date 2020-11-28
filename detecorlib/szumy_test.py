@@ -113,7 +113,7 @@ rule8var = Rule("level8var", level_8_var)
 rule9var = Rule("level9var", level_9_var)
 rule10var = Rule("level10var", level_10_var)
 
-szum_detector = Detector([rule1var, rule3var, rule5var, rule7var, rule9var, rule2, rule4, rule6, rule8, rule10])
+szum_detector = Detector([rule1, rule3, rule5, rule7, rule9, rule2, rule4, rule6, rule8, rule10])
 
 #serialize_folder(os.path.join("Cut_Data", "Common-Loon-WAV"), "Common-Loon-Serialized")
 #serialize_folder(os.path.join("Cut_Data", "Eurasian-Skylark-WAV"), "Eurasian-Skylark-Serialized")

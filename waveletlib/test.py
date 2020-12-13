@@ -3,6 +3,7 @@ from Daubechies import Daubechies
 import unittest
 import os
 from scipy.io import wavfile
+from dataTooShortException import DataTooShortException
 
 class TestWavelet(unittest.TestCase):
     def test_correct_size(self):
@@ -16,7 +17,7 @@ class TestWavelet(unittest.TestCase):
     def test_incorrect_size(self):
         wave = Transform(Daubechies(3))
         signal = [1] * 1023
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(DataTooShortException) as context:
              wave.decompose(signal, 10)
 
 

@@ -32,7 +32,7 @@ def downsampling_convolution(self, data, filter, step, mode):
         output.append(sum)
 
     #center if N >= F
-    while i < len(data):
+    while i < N:
         sum = 0
         j = 0
         while j < F:

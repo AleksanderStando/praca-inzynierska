@@ -7,8 +7,8 @@ from matplotlib import cm
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib
+from matplotlib.colors import TwoSlopeNorm
 
-# na wyjściu - lista współczynników detali otrzymanych z filtra, pierwszy element listy to współczynnik aproksymacji
 def showImage(plt):
     plt
     plt.show()
@@ -41,27 +41,17 @@ def generateImage(coeffs, x, y, filename, log_scale = False, time = 10):
 
     maxVal = getMax(coeffs)
     minVal = getMin(coeffs)
+
     # zamiana listy na postać, która umożliwia stworzenie obrazka
     # wyrównanie list do równej długości
-
-    if log_scale == True:
-        scale_pos = prepare_log_scale(maxVal)
-        scale_neg = prepare_log_scale(-minVal)
-    else:
-        scale_pos = prepare_standard_scale(maxVal)
-        scale_neg = prepare_standard_scale(-minVal)
-
     for i in range(0, level):
         coeffs[i] = multiplyList(coeffs[i], 2**(level-1-i))
         coeffs[i] = scale_list(coeffs[i], x)
-        #coeffs[i] = [get_color(elem, scale_pos, scale_neg) for elem in coeffs[i]]
 
     y_scale = max(1, y // level)
     img_ready_table = prepare_table(coeffs, y_scale)
     Z = np.array(img_ready_table)
-    Z = np.rot90(Z)
-    Z = np.rot90(Z)
-    Z = np.rot90(Z)
+    Z = np.rot90(Z, 3)
 
     Y_SIZE = len(img_ready_table)
     X_SIZE = len(img_ready_table)
@@ -73,15 +63,15 @@ def generateImage(coeffs, x, y, filename, log_scale = False, time = 10):
 
     fig, ax = plt.subplots(1, 1)
     if log_scale==True:
-        pcm = ax.pcolormesh(X, Y, Z, norm=colors.SymLogNorm(linthresh=0.03, linscale=0.03,
-                                              vmin=-1.0, vmax=1.0, base=1.01),
-                       cmap='RdBu_r', shading='auto')
+        pcm = ax.pcolormesh(X, Y, Z, norm=colors.SymLogNorm(linthresh=100, linscale=1,
+                                vmin=Z.min(), vmax=Z.max(), base=10), cmap='RdBu_r', shading='auto')
     else:
-        pcm = ax.pcolormesh(X,Y,Z, cmap='RdBu_r', shading='auto')
+        norm = TwoSlopeNorm(vmin=Z.min(), vcenter=0, vmax=Z.max())
+        pcm = ax.pcolormesh(X,Y,Z, cmap='RdBu_r', shading='auto', norm = norm)
 
     fig.colorbar(pcm, ax=ax, extend='both')
 
-    plt.xlabel("Time")
+    plt.xlabel("Time [s]")
     plt.ylabel("Level")
     return plt
 

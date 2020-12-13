@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib
 from matplotlib.colors import TwoSlopeNorm
+from matplotlib.colors import SymLogNorm
 
 def showImage(plt):
     plt
@@ -34,18 +35,13 @@ def get_color(value, scale_pos, scale_neg):
     elif value < 0:
         return [0, int(scale_neg(-value)), 0]
 
-def generateImage(coeffs, x, y, filename, log_scale = False, time = 10):
+def generateImage(coeffs, x, y, filename = None, log_scale = False, time = 10):
     # odrzucamy niepotrzeby współczynnik aproksymacji
     coeffs = coeffs[1:]
     level = len(coeffs)
 
-    maxVal = getMax(coeffs)
-    minVal = getMin(coeffs)
-
-    # zamiana listy na postać, która umożliwia stworzenie obrazka
-    # wyrównanie list do równej długości
+    # zamiana listy na postać, która umożliwia stworzenie wykresu
     for i in range(0, level):
-        coeffs[i] = multiplyList(coeffs[i], 2**(level-1-i))
         coeffs[i] = scale_list(coeffs[i], x)
 
     y_scale = max(1, y // level)
@@ -53,24 +49,19 @@ def generateImage(coeffs, x, y, filename, log_scale = False, time = 10):
     Z = np.array(img_ready_table)
     Z = np.rot90(Z, 3)
 
-    Y_SIZE = len(img_ready_table)
-    X_SIZE = len(img_ready_table)
-
-    step_x = time/X_SIZE
-    step_y = level/Y_SIZE
+    Y_SIZE = len(Z)
+    X_SIZE = len(Z[0])
 
     X, Y = np.mgrid[0:time:complex(0, X_SIZE), 0:level:complex(0, Y_SIZE)]
 
     fig, ax = plt.subplots(1, 1)
     if log_scale==True:
-        pcm = ax.pcolormesh(X, Y, Z, norm=colors.SymLogNorm(linthresh=100, linscale=1,
-                                vmin=Z.min(), vmax=Z.max(), base=10), cmap='RdBu_r', shading='auto')
+        norm = SymLogNorm(linthresh=100, linscale=1, vmin=Z.min(), vmax=Z.max(), base=10)
     else:
         norm = TwoSlopeNorm(vmin=Z.min(), vcenter=0, vmax=Z.max())
-        pcm = ax.pcolormesh(X,Y,Z, cmap='RdBu_r', shading='auto', norm = norm)
+    pcm = ax.pcolormesh(X,Y,Z, cmap='RdBu_r', shading='auto', norm = norm)
 
     fig.colorbar(pcm, ax=ax, extend='both')
-
     plt.xlabel("Time [s]")
     plt.ylabel("Level")
     return plt

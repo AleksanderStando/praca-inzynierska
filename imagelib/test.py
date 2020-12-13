@@ -11,6 +11,7 @@ sys.path.insert(0, '../serializelib')
 from transform import Transform
 from Daubechies import Daubechies
 from serialization import deserialize
+from Coiflet import Coiflet
 
 
 x = [1,2,3,4,3,6,2,8,1,2,3,4,3] * 40
@@ -22,15 +23,25 @@ wave = Transform(Daubechies(3))
 #generate.saveImage(plt, "test1")
 
 samplerate, data = wavfile.read('CL_72717')
+#coeffs = wave.decompose(data, 10, "PERIODIC")
+#plt = generate.generateImage(coeffs, 1000, 1000, "test2", log_scale=False, time=10)
+#generate.saveImage(plt, "common_loon_daub3")
+#plt = generate.generateImage(coeffs, 1000, 1000, "test2", log_scale=True, time=10)
+#generate.saveImage(plt, "common_loon_log_daub3")
+
+wave = Transform(Coiflet(2))
 coeffs = wave.decompose(data, 10, "PERIODIC")
 plt = generate.generateImage(coeffs, 1000, 1000, "test2", log_scale=False, time=10)
-generate.saveImage(plt, "common_loon_daub3")
+generate.saveImage(plt, "common_loon_coif2")
 plt = generate.generateImage(coeffs, 1000, 1000, "test2", log_scale=True, time=10)
-generate.saveImage(plt, "common_loon_log_daub3")
+generate.saveImage(plt, "common_loon_coif2_log")
 
-#samplerate, data = wavfile.read('231048')
-#coeffs = wave.decompose(data, 20)
-#generate.generateImage(coeffs, 1000, 1000, "test3")
+wave = Transform(Daubechies(1))
+coeffs = wave.decompose(data, 10, "PERIODIC")
+plt = generate.generateImage(coeffs, 1000, 1000, "test2", log_scale=False, time=10)
+generate.saveImage(plt, "common_loon_daub1")
+plt = generate.generateImage(coeffs, 1000, 1000, "test2", log_scale=True, time=10)
+generate.saveImage(plt, "common_loon_daub1_log")
 
 def create_images(path, save_folder_name):
     for filename in os.listdir(path):

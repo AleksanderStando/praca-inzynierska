@@ -23,7 +23,10 @@ class Rule:
     def uncheck(self):
         self.checked = False
 
-    def count_score(self,name, char_score):
+    def calculate(self, data, time):
+        return self.char.calculate(data, time)
+
+    def count_score(self, name, char_score):
         model = self.type_models[name]
         if self.mode == "normal":
             if char_score == model.avg:
@@ -34,9 +37,15 @@ class Rule:
                 scale = model.avg/char_score
             else:
                 scale = char_score/model.avg
-            var_score = max(50*scale, 0)
+            scale_score = max(50*scale, 0)
             if char_score > model.avg:
-                minmax_score = max(50 - ((char_score - model.avg) / (model.max - model.avg) * 25), 0)
+                if model.max == model.avg:
+                    minmax_score = 0
+                else:
+                    minmax_score = max(50 - ((char_score - model.avg) / (model.max - model.avg) * 25), 0)
             else:
-                minmax_score = max(50 - ((model.avg - char_score) / (model.avg - model.min) * 25), 0)
-            return var_score + minmax_score
+                if model.avg == model.min:
+                    minmax_score = 0
+                else:
+                    minmax_score = max(50 - ((model.avg - char_score) / (model.avg - model.min) * 25), 0)
+            return scale_score + minmax_score

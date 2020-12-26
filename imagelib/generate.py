@@ -76,7 +76,7 @@ def prepare_table(coeffs, scale):
             table.append(lst)
     return table
 
-def multiplyList(lst, times):
+def multiply_list(lst, times):
     new_list = []
     for item in lst:
         for i in range(times):
@@ -88,6 +88,8 @@ def scale_list(lst, size):
     x_size = len(lst)
     x = np.linspace(0, size-1, num=x_size, endpoint=True)
     y = np.array(lst)
+    print(len(x))
+    print(len(y))
 
     f1 = interp1d(x, y)
     return [f1(i) for i in range(size)]

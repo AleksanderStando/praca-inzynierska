@@ -27,8 +27,8 @@ class Coiflet(wavelet.Wavelet):
         self.dec_lo = [0] * (order * 6)
         self.dec_hi = [0] * (order * 6)
         self.dec_len = order*6
-        self.family_name = "Daubechies";
-        self.short_name = "db"
+        self.family_name = "Coiflet";
+        self.short_name = "co"
         self.support_width = 6*order - 1
         self.step = 2
         coeffs = self.map.get(order)

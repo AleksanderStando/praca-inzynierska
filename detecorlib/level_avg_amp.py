@@ -21,7 +21,7 @@ class LevelAvgAmp(characteristic.Characteristic):
 
         data = data[-self.data_level]
         data = [abs(elem) for elem in data]
-        #maxVal = max(data)
+
         scale_level = 1/maxVal
         data = [elem*scale_level for elem in data]
 
